@@ -1,46 +1,38 @@
-const smallCups = document.querySelectorAll('.cup-small');
-const liters = document.querySelector('#liters');
-const percentage = document.querySelector('#percentage');
+const cups = document.querySelectorAll('.cup-small');
+const literText = document.querySelector('#liters');
 const remained = document.querySelector('#remained');
+const percentage = document.querySelector('#percentage');
+const percentText = document.querySelector('#percentText');
+console.log(percentText);
 
-smallCups.forEach((cup, idx) => {
-  cup.addEventListener('click', (e) => fullSmallCups(idx));
+cups.forEach((cup, idx) => {
+  cup.addEventListener('click', (a) => {
+    fillCups(idx);
+  });
 });
 
-function fullSmallCups(idx) {
-  if (
-    smallCups[idx].classList.contains('full') &&
-    !smallCups[idx].nextElementSibling.classList.contains('full')
-  ) {
-    idx--;
-  }
-  smallCups.forEach((cup, idx2) => {
-    if (idx2 <= idx) {
+function fillCups(idx) {
+  cups.forEach((cup, num) => {
+    if (
+      cup.classList.contains('full') &&
+      !cup.nextElementSibling.classList.contains('full')
+    ) {
+      idx--;
+    }
+    if (num <= idx) {
       cup.classList.add('full');
     } else {
       cup.classList.remove('full');
     }
   });
-  updateBigCup();
+  fillBigCup(idx + 1);
 }
 
-function updateBigCup() {
-  const fullCups = document.querySelectorAll('.cup-small.full').length;
-  const totalCups = smallCups.length;
-
-  if (fullCups === 0) {
-    percentage.style.visibility = 'hidden';
-    percentage.style.height = 0;
-  } else {
-    percentage.style.visibitity = 'visible';
-    percentage.style.height = `${(fullCups / totalCups) * 330}px`;
-    percentage.innerText = `${(fullCups / totalCups) * 100}%`;
-  }
-  if (fullCups === totalCups) {
-    remained.style.visivility = 'hidden';
+function fillBigCup(a) {
+  percentText.textContent = `${(1 / 8) * 100 * a}%`;
+  percentage.style.height = `${(330 / 8) * a}px`;
+  literText.textContent = `${2 - (2 / 8) * a}L`;
+  if (a === 8) {
     remained.style.height = 0;
-  } else {
-    remained.style.visibility = 'visible';
-    liters.innerText = `${2 - (250 * fullCups) / 1000}L`;
   }
 }
