@@ -3,32 +3,33 @@ const literText = document.querySelector('#liters');
 const remained = document.querySelector('#remained');
 const percentage = document.querySelector('#percentage');
 const percentText = document.querySelector('#percentText');
-console.log(percentText);
 
 cups.forEach((cup, idx) => {
   cup.addEventListener('click', (a) => {
     fillCups(idx);
+    console.log('idx=', idx);
   });
 });
 
 function fillCups(idx) {
+  console.log(cups[idx].classList.contains('full'));
   cups.forEach((cup, num) => {
-    if (
-      cup.classList.contains('full') &&
-      !cup.nextElementSibling.classList.contains('full')
-    ) {
-      idx--;
-    }
-    if (num <= idx) {
+    if (num === idx && cups[idx].classList.contains('full')) {
+      cup.classList.toggle('full');
+      --idx;
+      fillBigCup(idx);
+    } else if (num <= idx) {
       cup.classList.add('full');
     } else {
       cup.classList.remove('full');
     }
   });
-  fillBigCup(idx + 1);
+  fillBigCup(idx);
 }
 
 function fillBigCup(a) {
+  console.log(a);
+  a = a + 1;
   percentText.textContent = `${(1 / 8) * 100 * a}%`;
   percentage.style.height = `${(330 / 8) * a}px`;
   literText.textContent = `${2 - (2 / 8) * a}L`;
@@ -36,3 +37,5 @@ function fillBigCup(a) {
     remained.style.height = 0;
   }
 }
+
+function fillBigCup2(b) {}
